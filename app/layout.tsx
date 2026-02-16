@@ -10,6 +10,9 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "NeroHub",
   description: "Página de historias",
+  icons: {
+    icon: "/book-open.png",
+  },
 };
 
 export default function RootLayout({

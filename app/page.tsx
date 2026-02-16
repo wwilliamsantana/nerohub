@@ -1,8 +1,8 @@
-import { LightRays } from "@/components/LightRays";
 import { Header } from "@/components/Header";
 import { TextType } from "@/components/TextType";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { LiquidEther } from "@/components/LiquidEther";
 
 export default function Home() {
   return (
@@ -26,25 +26,35 @@ export default function Home() {
           deletingSpeed={50}
           cursorBlinkDuration={0.5}
         />
-        <Link href="/register">
-          <Button className="mt-24 bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
-            Faça seu cadastro agora mesmo!
-          </Button>
-        </Link>
+        <div className="mt-24 flex gap-4">
+          <Link href="/register">
+            <Button className=" bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
+              Faça seu cadastro agora mesmo!
+            </Button>
+          </Link>
+          <Link href="/about">
+            <Button className=" bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
+              Saiba mais sobre o projeto
+            </Button>
+          </Link>
+        </div>
       </div>
-      <LightRays
-        raysOrigin="top-center"
-        raysColor="#ffffff"
-        raysSpeed={1}
-        lightSpread={1}
-        rayLength={2}
-        pulsating={false}
-        fadeDistance={1}
-        saturation={1}
-        followMouse
-        mouseInfluence={0.1}
-        noiseAmount={0}
-        distortion={0}
+      <LiquidEther
+        colors={["#5227FF", "#FF9FFC", "#B19EEF", "#00F0FF"]}
+        mouseForce={40}
+        cursorSize={140}
+        isViscous
+        viscous={50}
+        iterationsViscous={48}
+        iterationsPoisson={48}
+        resolution={0.7}
+        isBounce={true}
+        autoDemo
+        autoSpeed={1.2}
+        autoIntensity={3.5}
+        takeoverDuration={0.15}
+        autoResumeDelay={1500}
+        autoRampDuration={0.3}
       />
     </div>
   );

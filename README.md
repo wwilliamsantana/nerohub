@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📖 NeroHub
 
-## Getting Started
+Plataforma de histórias onde escritores podem compartilhar seus contos e dar vida aos seus personagens. Construído com Next.js 16, autenticação completa e uma UI imersiva com efeitos visuais interativos.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Tecnologias
+
+| Camada         | Tecnologia                         |
+| -------------- | ---------------------------------- |
+| Framework      | Next.js 16 (App Router, Turbopack) |
+| Linguagem      | TypeScript 5                       |
+| Estilização    | Tailwind CSS 4, tw-animate-css     |
+| UI             | shadcn/ui (Radix UI + CVA)         |
+| Autenticação   | NextAuth.js v4 (Credentials + JWT) |
+| Banco de dados | SQLite via Prisma 5                |
+| Formulários    | React Hook Form + Zod              |
+| Animações      | GSAP, Three.js, OGL (LiquidEther)  |
+| Lint           | ESLint (config Rocketseat)         |
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+nerohub/
+├── app/
+│   ├── (public)/                # Rotas públicas (acessíveis sem login)
+│   │   ├── about/               # Página "Sobre"
+│   │   ├── login/               # Página de login
+│   │   └── register/            # Página de registro
+│   ├── (private)/               # Rotas protegidas (requer autenticação)
+│   │   ├── layout.tsx           # Layout com verificação de sessão server-side
+│   │   └── dashboard/           # Painel do usuário
+│   ├── api/
+│   │   ├── auth/[...nextauth]/  # API route do NextAuth
+│   │   └── register/            # API de criação de conta
+│   ├── layout.tsx               # Layout raiz com SessionProvider
+│   ├── page.tsx                 # Landing page
+│   └── globals.css
+├── components/
+│   ├── Header.tsx               # Header com estado de sessão (login/sair)
+│   ├── LiquidEther.tsx          # Efeito visual fluido interativo (OGL)
+│   ├── Providers.tsx            # SessionProvider do NextAuth
+│   ├── RegisterForm.tsx         # Formulário de registro (RHF + Zod)
+│   ├── ScrollReveal.tsx         # Animação de revelação no scroll
+│   ├── SignOutButton.tsx        # Botão de logout (client component)
+│   ├── TextType.tsx             # Efeito de digitação animada
+│   └── ui/                      # Componentes shadcn/ui
+├── lib/
+│   ├── auth.ts                  # Configuração do NextAuth (CredentialsProvider)
+│   ├── prisma.ts                # Instância singleton do PrismaClient
+│   └── utils.ts                 # Utilitários (cn)
+├── prisma/
+│   ├── schema.prisma            # Schema do banco (modelo User)
+│   └── migrations/              # Histórico de migrations
+├── types/
+│   └── next-auth.d.ts           # Tipagem estendida da sessão
+└── public/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔐 Autenticação
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O sistema utiliza **NextAuth.js v4** com estratégia **JWT** e **CredentialsProvider**:
 
-## Learn More
+### Registro
 
-To learn more about Next.js, take a look at the following resources:
+1. Formulário validado com **React Hook Form + Zod** (nome, e-mail, senha, confirmação)
+2. `POST /api/register` → valida campos, verifica duplicata, hash com **bcrypt** (12 rounds), salva no banco
+3. Login automático após registro bem-sucedido
+4. Redirecionamento para `/dashboard`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Login
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. `signIn("credentials")` do NextAuth
+2. Busca o usuário pelo e-mail, compara senha com bcrypt
+3. Gera JWT com `id` do usuário nos callbacks
+4. Redirecionamento para `/dashboard`
 
-## Deploy on Vercel
+### Proteção de Rotas
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Rotas privadas** (`app/(private)/`) protegidas via `getServerSession` no layout server-side
+- **Usuários logados** que acessam `/login` ou `/register` são redirecionados para `/dashboard`
+- **Header** exibe nome do usuário + botão "Sair" quando autenticado
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🗄️ Banco de Dados
+
+SQLite com Prisma. Schema simplificado com apenas o modelo essencial:
+
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+```
+
+---
+
+## ⚡ Como Rodar
+
+```bash
+# Instalar dependências
+npm install
+
+# Configurar variáveis de ambiente
+# Crie um arquivo .env com:
+# DATABASE_URL="file:./dev.db"
+# NEXTAUTH_URL="http://localhost:3000"
+# NEXTAUTH_SECRET="sua-chave-secreta"
+
+# Rodar migrations do Prisma
+npx prisma migrate dev
+
+# Iniciar em desenvolvimento
+npm run dev
+```
+
+Acesse [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 📜 Scripts
+
+| Comando         | Descrição                            |
+| --------------- | ------------------------------------ |
+| `npm run dev`   | Inicia o servidor de desenvolvimento |
+| `npm run build` | Gera o build de produção             |
+| `npm run start` | Inicia o servidor de produção        |
+| `npm run lint`  | Executa o ESLint                     |
+
+---
+
+## 🌊 Landing Page
+
+A página inicial apresenta:
+
+- **Header** com navegação e estado de sessão
+- **TextType** — efeito de digitação animada com frases rotativas
+- **LiquidEther** — background fluido interativo que reage ao mouse (OGL/WebGL)
+- Botões de CTA para registro e exploração

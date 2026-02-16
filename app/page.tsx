@@ -6,11 +6,11 @@ import { LiquidEther } from "@/components/LiquidEther";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen relative bg-zinc-900">
+    <div className="w-full h-screen relative bg-black overflow-hidden">
       <Header />
       <div
         className="fixed inset-0 flex flex-col items-center
-      mt-60 text-6xl text-zinc-200 px-6 py-4 pointer-events-none"
+      mt-60 text-6xl text-zinc-100 px-6 py-4 pointer-events-none"
       >
         <TextType
           text={[
@@ -28,12 +28,12 @@ export default function Home() {
         />
         <div className="mt-24 flex gap-4">
           <Link href="/register">
-            <Button className=" bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
+            <Button className="bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
               Faça seu cadastro agora mesmo!
             </Button>
           </Link>
           <Link href="/about">
-            <Button className=" bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
+            <Button className="bg-transparent text-zinc-400 border border-zinc-600 font-semibold pointer-events-auto hover:scale-105 transition-all">
               Saiba mais sobre o projeto
             </Button>
           </Link>

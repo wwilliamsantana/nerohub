@@ -1,8 +1,51 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { LiquidEther } from "@/components/LiquidEther";
 import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+import { FormEvent, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
+  const { status } = useSession();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [status, router]);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("E-mail ou senha incorretos");
+      } else {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch {
+      setError("Ocorreu um erro. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="w-full h-screen relative bg-black overflow-hidden">
       <Link
@@ -31,7 +74,10 @@ export default function Login() {
       />
 
       <div className="fixed inset-0 flex items-start justify-center pt-[18vh] z-10 pointer-events-none">
-        <form className="flex flex-col gap-7 w-full max-w-sm bg-zinc-950/60 backdrop-blur-xl p-10 rounded-2xl border border-zinc-700/50 shadow-2xl pointer-events-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-7 w-full max-w-sm bg-zinc-950/60 backdrop-blur-xl p-10 rounded-2xl border border-zinc-700/50 shadow-2xl pointer-events-auto"
+        >
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">
               Bem-vindo de volta
@@ -39,6 +85,11 @@ export default function Login() {
             <p className="text-sm text-zinc-400">
               Entre na sua conta para continuar
             </p>
+            {error && (
+              <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 mt-1">
+                {error}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-4">
@@ -49,6 +100,9 @@ export default function Login() {
               <input
                 type="email"
                 placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="px-4 py-3 rounded-lg bg-zinc-900/80 border border-zinc-700/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500/40 text-zinc-200 placeholder-zinc-600 transition-all duration-300"
                 autoComplete="email"
               />
@@ -60,6 +114,9 @@ export default function Login() {
               <input
                 type="password"
                 placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
                 className="px-4 py-3 rounded-lg bg-zinc-900/80 border border-zinc-700/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500/40 text-zinc-200 placeholder-zinc-600 transition-all duration-300"
                 autoComplete="current-password"
               />
@@ -69,9 +126,10 @@ export default function Login() {
           <div>
             <Button
               type="submit"
-              className="w-full py-3 rounded-lg bg-zinc-100 text-zinc-900 font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base"
+              disabled={loading}
+              className="w-full py-3 rounded-lg bg-zinc-100 text-zinc-900 font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base disabled:opacity-40 disabled:pointer-events-none"
             >
-              Entrar
+              {loading ? "Entrando..." : "Entrar"}
             </Button>
           </div>
 

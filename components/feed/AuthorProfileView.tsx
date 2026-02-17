@@ -3,11 +3,11 @@
 import { ArrowLeft, BookOpen, Star, Bookmark } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { StoryCard } from "./StoryCard";
-import type { Story } from "@/lib/mock-stories";
+import type { StoryWithDetails } from "@/lib/stories";
 
 interface AuthorProfileViewProps {
   authorName: string;
-  stories: Story[];
+  stories: StoryWithDetails[];
 }
 
 export function AuthorProfileView({

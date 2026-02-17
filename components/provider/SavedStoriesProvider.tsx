@@ -9,9 +9,9 @@ import {
 } from "react";
 
 interface SavedStoriesContextType {
-  savedIds: number[];
-  isSaved: (id: number) => boolean;
-  toggleSave: (id: number) => void;
+  savedIds: string[];
+  isSaved: (id: string) => boolean;
+  toggleSave: (id: string) => void;
   totalSaved: number;
 }
 
@@ -19,18 +19,39 @@ const SavedStoriesContext = createContext<SavedStoriesContextType | undefined>(
   undefined,
 );
 
-export function SavedStoriesProvider({ children }: { children: ReactNode }) {
-  const [savedIds, setSavedIds] = useState<number[]>([]);
+export function SavedStoriesProvider({
+  children,
+  initialSavedIds = [],
+}: {
+  children: ReactNode;
+  initialSavedIds?: string[];
+}) {
+  const [savedIds, setSavedIds] = useState<string[]>(initialSavedIds);
 
   const isSaved = useCallback(
-    (id: number) => savedIds.includes(id),
+    (id: string) => savedIds.includes(id),
     [savedIds],
   );
 
-  const toggleSave = useCallback((id: number) => {
+  const toggleSave = useCallback(async (id: string) => {
+    // Optimistic update
     setSavedIds((prev) =>
       prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
     );
+
+    try {
+      const res = await fetch(`/api/stories/${id}/save`, { method: "POST" });
+      if (!res.ok) {
+        // Reverte em caso de erro
+        setSavedIds((prev) =>
+          prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
+        );
+      }
+    } catch {
+      setSavedIds((prev) =>
+        prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
+      );
+    }
   }, []);
 
   return (

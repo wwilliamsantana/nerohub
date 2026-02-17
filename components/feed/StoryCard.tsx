@@ -5,11 +5,11 @@ import { StarRating } from "./StarRating";
 import { TagBadge } from "./TagBadge";
 import { useSavedStories } from "@/components/provider/SavedStoriesProvider";
 import { formatRelativeDate } from "@/lib/utils";
-import type { Story } from "@/lib/mock-stories";
+import type { StoryWithDetails } from "@/lib/stories";
 import Link from "next/link";
 
 interface StoryCardProps {
-  story: Story;
+  story: StoryWithDetails;
 }
 
 export function StoryCard({ story }: StoryCardProps) {

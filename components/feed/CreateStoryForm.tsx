@@ -11,7 +11,7 @@ import {
   FileText,
   Tags,
 } from "lucide-react";
-import { ALL_TAGS } from "@/lib/mock-stories";
+import { ALL_TAGS } from "@/lib/stories";
 
 const AVAILABLE_TAGS = ALL_TAGS.filter((tag) => tag !== "Todos");
 
@@ -58,11 +58,30 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
 
     setIsSubmitting(true);
 
-    // Simula o envio (sem Prisma)
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    try {
+      const res = await fetch("/api/stories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: title.trim(),
+          content: content.trim(),
+          tags: selectedTags,
+        }),
+      });
 
-    // Redireciona de volta ao dashboard
-    router.push("/dashboard");
+      if (!res.ok) {
+        const data = await res.json();
+        alert(data.error || "Erro ao publicar história");
+        setIsSubmitting(false);
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      alert("Erro ao publicar história");
+      setIsSubmitting(false);
+    }
   }
 
   return (

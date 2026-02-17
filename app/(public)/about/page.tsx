@@ -30,7 +30,7 @@ export default function About() {
         takeoverDuration={0.2}
         autoResumeDelay={5000}
         autoRampDuration={0.5}
-        className="!fixed inset-0 z-0"
+        className="fixed! inset-0 z-0"
       />
 
       <div className="relative z-10">

@@ -6,16 +6,25 @@ import { useRouter } from "next/navigation";
 import { StarRating } from "./StarRating";
 import { TagBadge } from "./TagBadge";
 import { useSavedStories } from "@/components/provider/SavedStoriesProvider";
-import type { Story } from "@/lib/mock-stories";
+
+import type { StoryWithDetails } from "@/lib/stories";
+import { InteractiveRating } from "./InteractiveRating";
 
 interface StoryViewProps {
-  story: Story;
+  story: StoryWithDetails;
+  currentUserId?: string;
+  userRating?: number;
 }
 
-export function StoryView({ story }: StoryViewProps) {
+export function StoryView({
+  story,
+  currentUserId,
+  userRating,
+}: StoryViewProps) {
   const router = useRouter();
   const { isSaved, toggleSave } = useSavedStories();
   const saved = isSaved(story.id);
+  const isOwnStory = currentUserId === story.authorId;
 
   const paragraphs = story.content.split("\n\n");
 
@@ -108,6 +117,16 @@ export function StoryView({ story }: StoryViewProps) {
             </p>
           ))}
         </article>
+
+        {/* Rating section */}
+        {!isOwnStory && currentUserId && (
+          <div className="mt-12 pt-8 border-t border-zinc-800">
+            <InteractiveRating
+              storyId={story.id}
+              initialRating={userRating ?? 0}
+            />
+          </div>
+        )}
 
         {/* Bottom back button */}
         <div className="mt-16 pt-8 border-t border-zinc-800 flex justify-center">

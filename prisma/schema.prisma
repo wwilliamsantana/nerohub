@@ -16,4 +16,65 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  stories      Story[]
+  savedStories SavedStory[]
+  ratings      Rating[]
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  tags         StoryTag[]
+  savedBy      SavedStory[]
+  ratings      Rating[]
+}
+
+model Tag {
+  id   String @id @default(cuid())
+  name String @unique
+
+  stories StoryTag[]
+}
+
+model StoryTag {
+  storyId String
+  tagId   String
+
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  tag   Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, tagId])
+}
+
+model SavedStory {
+  userId  String
+  storyId String
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, storyId])
+}
+
+model Rating {
+  userId  String
+  storyId String
+  value   Int
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, storyId])
 }

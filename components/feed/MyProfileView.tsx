@@ -8,21 +8,21 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSavedStories } from "@/components/provider/SavedStoriesProvider";
-import { MOCK_STORIES } from "@/lib/mock-stories";
 import { StoryCard } from "./StoryCard";
+import type { StoryWithDetails } from "@/lib/stories";
 
 interface MyProfileViewProps {
   userName: string;
+  savedStories: StoryWithDetails[];
+  myStories: StoryWithDetails[];
 }
 
-export function MyProfileView({ userName }: MyProfileViewProps) {
+export function MyProfileView({
+  userName,
+  savedStories,
+  myStories,
+}: MyProfileViewProps) {
   const router = useRouter();
-  const { savedIds } = useSavedStories();
-
-  const savedStories = MOCK_STORIES.filter((story) =>
-    savedIds.includes(story.id),
-  );
 
   return (
     <div className="min-h-screen bg-black text-zinc-100">
@@ -53,6 +53,15 @@ export function MyProfileView({ userName }: MyProfileViewProps) {
           {/* Stats */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/80 border border-zinc-800">
+              <BookOpen size={16} className="text-violet-400" />
+              <span className="text-sm font-semibold text-zinc-200">
+                {myStories.length}
+              </span>
+              <span className="text-xs text-zinc-500">
+                {myStories.length === 1 ? "história" : "histórias"}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/80 border border-zinc-800">
               <Bookmark size={16} className="text-amber-400" />
               <span className="text-sm font-semibold text-zinc-200">
                 {savedStories.length}
@@ -63,6 +72,21 @@ export function MyProfileView({ userName }: MyProfileViewProps) {
             </div>
           </div>
         </div>
+
+        {/* My stories section */}
+        {myStories.length > 0 && (
+          <div className="space-y-4 mb-12">
+            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+              <BookOpen size={18} className="text-violet-400" />
+              Minhas Histórias
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {myStories.map((story) => (
+                <StoryCard key={story.id} story={story} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Saved stories section */}
         <div className="space-y-4">

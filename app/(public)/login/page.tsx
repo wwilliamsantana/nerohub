@@ -21,6 +21,15 @@ export default function Login() {
     }
   }, [status, router]);
 
+  // Se está verificando sessão, mostra loading
+  if (status === "loading") {
+    return (
+      <div className="w-full h-screen bg-black flex items-center justify-center">
+        <div className="h-6 w-6 border-2 border-zinc-600 border-t-violet-400 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");

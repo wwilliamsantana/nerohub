@@ -4,18 +4,23 @@ import { useState } from "react";
 import { StoryCard } from "./StoryCard";
 import { TagBadge } from "./TagBadge";
 import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
-import { MOCK_STORIES, ALL_TAGS } from "@/lib/mock-stories";
+import { ALL_TAGS } from "@/lib/stories";
+import type { StoryWithDetails } from "@/lib/stories";
 
 const STORIES_PER_PAGE = 14;
 
-export function StoryFeed() {
+interface StoryFeedProps {
+  stories: StoryWithDetails[];
+}
+
+export function StoryFeed({ stories: allStories }: StoryFeedProps) {
   const [activeTag, setActiveTag] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
 
   const filteredStories = (
     activeTag === "Todos"
-      ? [...MOCK_STORIES]
-      : MOCK_STORIES.filter((story) => story.tags.includes(activeTag))
+      ? [...allStories]
+      : allStories.filter((story) => story.tags.includes(activeTag))
   ).sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );

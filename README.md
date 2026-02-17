@@ -1,6 +1,8 @@
 # 📖 NeroHub
 
-Plataforma de histórias onde escritores podem compartilhar seus contos e dar vida aos seus personagens. Construído com Next.js 16, autenticação completa e uma UI imersiva com efeitos visuais interativos.
+Uma plataforma de histórias feita por quem ama contar e ouvir boas narrativas. No NeroHub, escritores compartilham seus contos, exploram o que a comunidade criou, salvam suas histórias favoritas e avaliam o trabalho uns dos outros — tudo isso com uma interface escura, imersiva e cheia de detalhes visuais.
+
+Construído com **Next.js 16**, **Prisma**, **NextAuth** e uma pitada de WebGL para deixar tudo mais bonito.
 
 ---
 
@@ -12,11 +14,25 @@ Plataforma de histórias onde escritores podem compartilhar seus contos e dar vi
 | Linguagem      | TypeScript 5                       |
 | Estilização    | Tailwind CSS 4, tw-animate-css     |
 | UI             | shadcn/ui (Radix UI + CVA)         |
+| Ícones         | Lucide React                       |
 | Autenticação   | NextAuth.js v4 (Credentials + JWT) |
-| Banco de dados | SQLite via Prisma 5                |
+| Banco de dados | SQLite via Prisma 6                |
 | Formulários    | React Hook Form + Zod              |
 | Animações      | GSAP, Three.js, OGL (LiquidEther)  |
 | Lint           | ESLint (config Rocketseat)         |
+
+---
+
+## ✨ Funcionalidades
+
+- **Criar e publicar histórias** com título, conteúdo e até 5 tags (pré-definidas ou personalizadas)
+- **Feed paginado** com filtro por tags e ordenação por data
+- **Salvar histórias** de outros autores (toggle com atualização otimista)
+- **Avaliar histórias** com sistema de 1 a 5 estrelas (não é possível avaliar as próprias)
+- **Perfil pessoal** com suas histórias publicadas e as que você mais gostou
+- **Perfil de autor** para explorar as publicações de outros escritores
+- **Autenticação completa** com registro, login e proteção de rotas server-side
+- **Landing page imersiva** com efeito de digitação animada e background fluido interativo (WebGL)
 
 ---
 
@@ -25,37 +41,62 @@ Plataforma de histórias onde escritores podem compartilhar seus contos e dar vi
 ```
 nerohub/
 ├── app/
-│   ├── (public)/                # Rotas públicas (acessíveis sem login)
-│   │   ├── about/               # Página "Sobre"
-│   │   ├── login/               # Página de login
-│   │   └── register/            # Página de registro
-│   ├── (private)/               # Rotas protegidas (requer autenticação)
-│   │   ├── layout.tsx           # Layout com verificação de sessão server-side
-│   │   └── dashboard/           # Painel do usuário
+│   ├── (public)/                  # Rotas públicas (sem login)
+│   │   ├── about/                 # Página "Sobre"
+│   │   ├── login/                 # Página de login
+│   │   └── register/              # Página de registro
+│   ├── (private)/                 # Rotas protegidas (requer sessão)
+│   │   ├── layout.tsx             # Layout com verificação server-side
+│   │   ├── dashboard/             # Feed principal do usuário
+│   │   ├── profile/               # Perfil pessoal (minhas histórias + salvas)
+│   │   ├── author/[name]/         # Perfil público de um autor
+│   │   └── story/
+│   │       ├── [id]/              # Visualização completa de uma história
+│   │       └── create/            # Formulário de criação de história
 │   ├── api/
-│   │   ├── auth/[...nextauth]/  # API route do NextAuth
-│   │   └── register/            # API de criação de conta
-│   ├── layout.tsx               # Layout raiz com SessionProvider
-│   ├── page.tsx                 # Landing page
+│   │   ├── auth/[...nextauth]/    # API route do NextAuth
+│   │   ├── register/              # Criação de conta
+│   │   └── stories/
+│   │       ├── route.ts           # GET (listar) / POST (criar história)
+│   │       └── [id]/
+│   │           ├── rate/route.ts  # POST (avaliar de 1 a 5)
+│   │           └── save/route.ts  # POST (salvar/remover dos salvos)
+│   ├── layout.tsx                 # Layout raiz com Providers
+│   ├── page.tsx                   # Landing page
 │   └── globals.css
 ├── components/
-│   ├── Header.tsx               # Header com estado de sessão (login/sair)
-│   ├── LiquidEther.tsx          # Efeito visual fluido interativo (OGL)
-│   ├── Providers.tsx            # SessionProvider do NextAuth
-│   ├── RegisterForm.tsx         # Formulário de registro (RHF + Zod)
-│   ├── ScrollReveal.tsx         # Animação de revelação no scroll
-│   ├── SignOutButton.tsx        # Botão de logout (client component)
-│   ├── TextType.tsx             # Efeito de digitação animada
-│   └── ui/                      # Componentes shadcn/ui
+│   ├── Header.tsx                 # Header com navegação e estado de sessão
+│   ├── RegisterForm.tsx           # Formulário de registro (RHF + Zod)
+│   ├── SignOutButton.tsx          # Botão de logout (client component)
+│   ├── feed/
+│   │   ├── CreateStoryForm.tsx    # Formulário de criação de história
+│   │   ├── StoryFeed.tsx          # Feed paginado com filtro por tags
+│   │   ├── StoryCard.tsx          # Card de história no feed
+│   │   ├── StoryView.tsx          # Visualização completa da história
+│   │   ├── InteractiveRating.tsx  # Avaliação com estrelas clicáveis
+│   │   ├── StarRating.tsx         # Exibição de nota (somente leitura)
+│   │   ├── TagBadge.tsx           # Badge de tag
+│   │   ├── MyProfileView.tsx      # Tela do perfil pessoal
+│   │   └── AuthorProfileView.tsx  # Tela do perfil de autor
+│   ├── provider/
+│   │   ├── Providers.tsx          # SessionProvider + SavedStoriesProvider
+│   │   └── SavedStoriesProvider.tsx  # Context de histórias salvas (API + otimista)
+│   └── ui/
+│       ├── button.tsx             # Botão (shadcn/ui)
+│       ├── separator.tsx          # Separador (shadcn/ui)
+│       ├── LiquidEther.tsx        # Background fluido interativo (OGL/WebGL)
+│       ├── ScrollReveal.tsx       # Animação de revelação no scroll
+│       └── TextType.tsx           # Efeito de digitação animada
 ├── lib/
-│   ├── auth.ts                  # Configuração do NextAuth (CredentialsProvider)
-│   ├── prisma.ts                # Instância singleton do PrismaClient
-│   └── utils.ts                 # Utilitários (cn)
+│   ├── auth.ts                    # Configuração do NextAuth (Credentials + JWT)
+│   ├── prisma.ts                  # Instância singleton do PrismaClient
+│   ├── stories.ts                 # Queries do banco (histórias, tags, notas, salvos)
+│   └── utils.ts                   # Utilitários (cn)
 ├── prisma/
-│   ├── schema.prisma            # Schema do banco (modelo User)
-│   └── migrations/              # Histórico de migrations
+│   ├── schema.prisma              # Schema completo do banco
+│   └── migrations/                # Histórico de migrations
 ├── types/
-│   └── next-auth.d.ts           # Tipagem estendida da sessão
+│   └── next-auth.d.ts             # Tipagem estendida da sessão
 └── public/
 ```
 
@@ -63,66 +104,129 @@ nerohub/
 
 ## 🔐 Autenticação
 
-O sistema utiliza **NextAuth.js v4** com estratégia **JWT** e **CredentialsProvider**:
+O sistema usa **NextAuth.js v4** com estratégia **JWT** e **CredentialsProvider**:
 
 ### Registro
 
 1. Formulário validado com **React Hook Form + Zod** (nome, e-mail, senha, confirmação)
-2. `POST /api/register` → valida campos, verifica duplicata, hash com **bcrypt** (12 rounds), salva no banco
-3. Login automático após registro bem-sucedido
+2. `POST /api/register` → valida campos, verifica duplicata, faz hash com **bcrypt**, salva no banco
+3. Login automático logo após o registro
 4. Redirecionamento para `/dashboard`
 
 ### Login
 
 1. `signIn("credentials")` do NextAuth
-2. Busca o usuário pelo e-mail, compara senha com bcrypt
-3. Gera JWT com `id` do usuário nos callbacks
+2. Busca o usuário por e-mail e compara a senha com bcrypt
+3. Gera JWT com o `id` do usuário via callbacks
 4. Redirecionamento para `/dashboard`
 
 ### Proteção de Rotas
 
-- **Rotas privadas** (`app/(private)/`) protegidas via `getServerSession` no layout server-side
-- **Usuários logados** que acessam `/login` ou `/register` são redirecionados para `/dashboard`
-- **Header** exibe nome do usuário + botão "Sair" quando autenticado
+- **Rotas privadas** (`app/(private)/`) são protegidas via `getServerSession` no layout server-side — quem não está logado é redirecionado para `/login`
+- **Usuários logados** que acessam `/login` ou `/register` são automaticamente levados ao `/dashboard`
+- **Header** exibe o nome do usuário e o botão "Sair" quando há uma sessão ativa
 
 ---
 
 ## 🗄️ Banco de Dados
 
-SQLite com Prisma. Schema simplificado com apenas o modelo essencial:
+SQLite com Prisma. O schema possui 6 modelos que cobrem toda a lógica da plataforma:
 
 ```prisma
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
+  id           String       @id @default(cuid())
+  name         String
+  email        String       @unique
+  password     String
+  createdAt    DateTime     @default(now())
+  stories      Story[]
+  savedStories SavedStory[]
+  ratings      Rating[]
+}
+
+model Story {
+  id        String     @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  authorId  String
+  author    User       @relation(...)
+  tags      StoryTag[]
+  savedBy   SavedStory[]
+  ratings   Rating[]
+}
+
+model Tag {
+  id      String     @id @default(cuid())
+  name    String     @unique
+  stories StoryTag[]
+}
+
+model StoryTag {
+  storyId String
+  tagId   String
+  @@id([storyId, tagId])
+}
+
+model SavedStory {
+  userId    String
+  storyId   String
   createdAt DateTime @default(now())
+  @@id([userId, storyId])
+}
+
+model Rating {
+  userId    String
+  storyId   String
+  value     Int        // 1 a 5
+  createdAt DateTime   @default(now())
+  @@id([userId, storyId])
 }
 ```
+
+### Relações
+
+- Um **usuário** pode ter várias histórias, salvar histórias de outros e avaliá-las
+- Uma **história** pertence a um autor e pode ter várias tags (muitos-para-muitos via `StoryTag`)
+- **Salvos e avaliações** usam chave composta `[userId, storyId]` — cada usuário salva/avalia uma história apenas uma vez
+- Todas as relações possuem `onDelete: Cascade`
+
+---
+
+## 📡 API Routes
+
+| Rota                      | Método | Descrição                                           |
+| ------------------------- | ------ | --------------------------------------------------- |
+| `/api/register`           | POST   | Cria uma nova conta de usuário                      |
+| `/api/auth/[...nextauth]` | \*     | Handlers do NextAuth (login, sessão, etc.)          |
+| `/api/stories`            | GET    | Lista todas as histórias com nota média e contagens |
+| `/api/stories`            | POST   | Cria uma nova história com tags                     |
+| `/api/stories/[id]/save`  | POST   | Salva ou remove uma história dos favoritos (toggle) |
+| `/api/stories/[id]/rate`  | POST   | Avalia uma história de 1 a 5 estrelas               |
 
 ---
 
 ## ⚡ Como Rodar
 
 ```bash
-# Instalar dependências
+# 1. Instalar dependências
 npm install
 
-# Configurar variáveis de ambiente
-# Crie um arquivo .env com:
-# DATABASE_URL="file:./dev.db"
-# NEXTAUTH_URL="http://localhost:3000"
-# NEXTAUTH_SECRET="sua-chave-secreta"
+# 2. Configurar variáveis de ambiente
+#    Crie um arquivo .env na raiz com:
+#    DATABASE_URL="file:./dev.db"
+#    NEXTAUTH_URL="http://localhost:3000"
+#    NEXTAUTH_SECRET="sua-chave-secreta-aqui"
 
-# Rodar migrations do Prisma
+# 3. Rodar as migrations e gerar o Prisma Client
 npx prisma migrate dev
 
-# Iniciar em desenvolvimento
+# 4. Iniciar o servidor de desenvolvimento
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000).
+Acesse [http://localhost:3000](http://localhost:3000) e crie sua conta para começar a escrever.
 
 ---
 
@@ -139,9 +243,21 @@ Acesse [http://localhost:3000](http://localhost:3000).
 
 ## 🌊 Landing Page
 
-A página inicial apresenta:
+A página inicial é a porta de entrada do NeroHub e combina animações com uma estética escura e moderna:
 
-- **Header** com navegação e estado de sessão
-- **TextType** — efeito de digitação animada com frases rotativas
-- **LiquidEther** — background fluido interativo que reage ao mouse (OGL/WebGL)
-- Botões de CTA para registro e exploração
+- **TextType** — frases motivacionais que se digitam e se apagam em loop, dando vida ao centro da tela
+- **LiquidEther** — um fundo fluido e interativo renderizado em WebGL (via OGL) que reage ao movimento do mouse
+- **Header** com navegação inteligente baseada no estado de sessão
+- CTAs para registro e para conhecer mais sobre o projeto
+
+---
+
+## 🧭 Fluxo do Usuário
+
+1. O visitante chega na landing page e se cadastra
+2. Após o registro, é logado automaticamente e levado ao **dashboard**
+3. No dashboard, explora o **feed de histórias** — pode filtrar por tags e navegar entre páginas
+4. Clica em uma história para ler o conteúdo completo, e pode **salvar** ou **avaliar com estrelas**
+5. Acessa **"Escrever"** para publicar sua própria história com título, conteúdo e tags
+6. No **"Meu Perfil"**, visualiza suas publicações e as histórias que salvou
+7. Pode visitar o **perfil de qualquer autor** clicando no nome dele em um card

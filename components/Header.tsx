@@ -12,7 +12,7 @@ export function Header() {
       <div className="w-full max-w-6xl flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-transparent border border-zinc-600 rounded-lg sm:rounded-full">
         <Link
           href="/"
-          className="text-sm sm:text-base font-bold text-zinc-200 flex items-center justify-center gap-2 flex-shrink-0"
+          className="text-sm sm:text-base font-bold text-zinc-200 flex items-center justify-center gap-2 shrink-0"
         >
           <Image
             src="/book-open.png"

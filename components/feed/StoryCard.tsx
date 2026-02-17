@@ -44,7 +44,7 @@ export function StoryCard({ story }: StoryCardProps) {
               e.stopPropagation();
               toggleSave(story.id);
             }}
-            className={`flex items-center gap-1 transition-colors cursor-pointer flex-shrink-0 ${
+            className={`flex items-center gap-1 transition-colors cursor-pointer shrink-0 ${
               saved ? "text-amber-400" : "text-zinc-500 hover:text-amber-400"
             }`}
             title={saved ? "Remover dos salvos" : "Salvar história"}

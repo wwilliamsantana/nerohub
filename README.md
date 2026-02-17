@@ -16,7 +16,7 @@ Construído com **Next.js 16**, **Prisma**, **NextAuth** e uma pitada de WebGL p
 | UI             | shadcn/ui (Radix UI + CVA)         |
 | Ícones         | Lucide React                       |
 | Autenticação   | NextAuth.js v4 (Credentials + JWT) |
-| Banco de dados | SQLite via Prisma 6                |
+| Banco de dados | PostgreSQL via Prisma 6 (Supabase) |
 | Formulários    | React Hook Form + Zod (validação)  |
 | Animações      | GSAP, Three.js, OGL (LiquidEther)  |
 | Lint           | ESLint (config Rocketseat)         |
@@ -35,6 +35,7 @@ Construído com **Next.js 16**, **Prisma**, **NextAuth** e uma pitada de WebGL p
 - **Autenticação completa** com validação React Hook Form + Zod em todos os forms
 - **Proteção de rotas** server-side com `getServerSession`
 - **Landing page imersiva** com efeito de digitação animada e background fluido interativo (WebGL)
+- **Responsividade Mobile-First** — totalmente otimizado para celulares, tablets e desktops
 
 ---
 
@@ -144,7 +145,7 @@ O sistema usa **NextAuth.js v4** com estratégia **JWT** e **CredentialsProvider
 
 ## 🗄️ Banco de Dados
 
-SQLite com Prisma. O schema possui 6 modelos que cobrem toda a lógica da plataforma:
+PostgreSQL com Prisma (hospedado em Supabase). O schema possui 6 modelos que cobrem toda a lógica da plataforma:
 
 ```prisma
 model User {
@@ -228,19 +229,21 @@ model Rating {
 npm install
 
 # 2. Configurar variáveis de ambiente
-#    Crie um arquivo .env na raiz com:
-#    DATABASE_URL="file:./dev.db"
+#    Crie um arquivo .env.local na raiz com:
+#    DATABASE_URL="postgresql://user:password@host:port/database"
 #    NEXTAUTH_URL="http://localhost:3000"
 #    NEXTAUTH_SECRET="sua-chave-secreta-aqui"
 
 # 3. Rodar as migrations e gerar o Prisma Client
-npx prisma migrate dev
+npx prisma migrate deploy
 
 # 4. Iniciar o servidor de desenvolvimento
 npm run dev
 ```
 
 Acesse [http://localhost:3000](http://localhost:3000) e crie sua conta para começar a escrever.
+
+> **Nota sobre Supabase:** Para obter a `DATABASE_URL`, acesse [https://supabase.com](https://supabase.com), crie um projeto, e copie a connection string em `Settings > Database > Connection string > URI`
 
 ---
 
@@ -291,6 +294,33 @@ tags: array com 1-5 itens (strings)
 - ✅ Type-safe com `z.infer<typeof schema>`
 - ✅ Padrão consistente em todos os formulários
 - ✅ Erros de servidor tratados com `setError()`
+
+---
+
+## 📱 Responsividade
+
+O projeto é **100% responsivo** com Tailwind CSS usando abordagem mobile-first:
+
+**Breakpoints utilizados:**
+
+- `sm`: 640px (tablets pequenos)
+- `md`: 768px (tablets)
+- `lg`: 1024px (desktops)
+- `xl`: 1280px (desktops maiores)
+
+**Componentes otimizados:**
+
+- **Header** — logo responsivo, menu adaptativo
+- **Formulários** — padding/margin reduzido em mobile, font-size dinâmico
+- **Cards** — 1 coluna (mobile) → 2 colunas (tablet) → 3 colunas (desktop)
+- **Paginação** — ícones menores em mobile, scroll horizontal quando necessário
+- **Buttons** — texto escondido em mobile (ícones apenas), labels completos em desktop
+
+**Testes recomendados:**
+
+- iPhone/Android (320px - 425px)
+- Tablet (768px - 1024px)
+- Desktop (1280px+)
 
 ---
 

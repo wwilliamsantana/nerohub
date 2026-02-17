@@ -26,7 +26,7 @@ export default function Home() {
           deletingSpeed={50}
           cursorBlinkDuration={0.5}
         />
-        <div className="mt-24 flex gap-4">
+        <div className="mt-24 flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start ">
           <Link href="/register">
             <Button className="bg-zinc-100 text-zinc-900 font-semibold pointer-events-auto hover:bg-zinc-200 hover:scale-105 transition-all">
               Faça seu cadastro agora mesmo!

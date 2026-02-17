@@ -25,27 +25,28 @@ export default async function DashboardPage() {
   return (
     <SavedStoriesProvider initialSavedIds={savedIds}>
       <div className="min-h-screen bg-black text-zinc-100">
-        <div className="max-w-4xl mx-auto px-6 py-20">
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">
-                Olá, {session.user?.name} 👋
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-8">
+            <div className="space-y-1 sm:space-y-2">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
+                Olá, {session.user?.name?.split(" ")[0]} 👋
               </h1>
-              <p className="text-zinc-400">
-                Bem-vindo ao seu painel no NeroHub.
+              <p className="text-sm sm:text-base text-zinc-400">
+                Bem-vindo ao NeroHub
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <Link
                 href="/story/create"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 text-sm font-semibold text-white hover:bg-violet-500 transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm-px-3 rounded-lg bg-violet-600 text-xs sm:text-sm font-semibold text-white hover:bg-violet-500 transition-all whitespace-nowrap"
               >
                 <PenLine size={16} />
-                Escrever
+                <span className="hidden sm:inline">Escrever</span>
+                <span className="sm:hidden">Novo</span>
               </Link>
               <Link
                 href="/profile"
-                className="px-4 py-2 rounded-lg bg-violet-600/20 border border-violet-500/30 text-sm text-violet-300 hover:bg-violet-600/30 hover:text-violet-200 transition-all"
+                className="sm:flex items-center px-4 py-2 rounded-lg bg-violet-600/20 border border-violet-500/30 text-sm text-violet-300 hover:bg-violet-600/30 hover:text-violet-200 transition-all"
               >
                 Meu Perfil
               </Link>

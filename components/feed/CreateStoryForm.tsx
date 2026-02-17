@@ -59,7 +59,9 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
   const content = watch("content");
 
   // Gera o resumo automaticamente dos primeiros 300 caracteres do conteúdo
-  const excerpt = content.slice(0, 300) + (content.length > 300 ? "..." : "");
+  const excerpt = content
+    ? content.slice(0, 300) + (content.length > 300 ? "..." : "")
+    : "";
 
   function toggleTag(tag: string) {
     setValue(

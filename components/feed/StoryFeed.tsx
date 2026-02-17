@@ -65,7 +65,7 @@ export function StoryFeed({ stories: allStories }: StoryFeedProps) {
       </div>
 
       {/* Stories grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {paginatedStories.map((story) => (
           <StoryCard key={story.id} story={story} />
         ))}
@@ -88,7 +88,7 @@ export function StoryFeed({ stories: allStories }: StoryFeedProps) {
               key={page}
               type="button"
               onClick={() => setCurrentPage(page)}
-              className={`flex items-center justify-center h-9 w-9 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+              className={`flex items-center justify-center h-8 sm:h-9 w-8 sm:w-9 rounded-lg text-xs sm:text-sm font-medium transition-all cursor-pointer flex-shrink-0 ${
                 currentPage === page
                   ? "bg-violet-500/20 text-violet-300 border border-violet-500/40"
                   : "border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
@@ -102,15 +102,14 @@ export function StoryFeed({ stories: allStories }: StoryFeedProps) {
             type="button"
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className="flex items-center justify-center h-9 w-9 rounded-lg border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex items-center justify-center h-8 sm:h-9 w-8 sm:w-9 rounded-lg border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={14} className="sm:w-4 sm:h-4" />
           </button>
 
-          <span className="ml-3 text-xs text-zinc-500">
+          <span className="ml-2 sm:ml-3 text-xs text-zinc-500 flex-shrink-0">
             {startIndex + 1}–
-            {Math.min(startIndex + STORIES_PER_PAGE, filteredStories.length)} de{" "}
-            {filteredStories.length}
+            {Math.min(startIndex + STORIES_PER_PAGE, filteredStories.length)}
           </span>
         </div>
       )}

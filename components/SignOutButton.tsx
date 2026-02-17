@@ -8,7 +8,7 @@ export function SignOutButton() {
 
   async function handleSignOut() {
     await signOut({ redirect: false });
-    router.push("/login");
+    router.push("/");
     router.refresh();
   }
 

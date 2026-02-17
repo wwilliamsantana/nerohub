@@ -95,16 +95,16 @@ export default function Login() {
         autoRampDuration={0.5}
       />
 
-      <div className="fixed inset-0 flex items-start justify-center pt-[18vh] z-10 pointer-events-none">
+      <div className="fixed inset-0 flex items-start justify-center pt-[12vh] sm:pt-[18vh] z-10 pointer-events-none">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-7 w-full max-w-sm bg-zinc-950/60 backdrop-blur-xl p-10 rounded-2xl border border-zinc-700/50 shadow-2xl pointer-events-auto"
+          className="flex flex-col gap-6 sm:gap-7 w-full max-w-sm mx-4 sm:mx-0 bg-zinc-950/60 backdrop-blur-xl p-6 sm:p-10 rounded-xl sm:rounded-2xl border border-zinc-700/50 shadow-2xl pointer-events-auto"
         >
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">
+          <div className="text-center space-y-1.5 sm:space-y-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
               Bem-vindo de volta
             </h1>
-            <p className="text-sm text-zinc-400">
+            <p className="text-xs sm:text-sm text-zinc-400">
               Entre na sua conta para continuar
             </p>
             {errors.email && (

@@ -89,13 +89,15 @@ export function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-7 w-full max-w-sm bg-zinc-950/60 backdrop-blur-xl p-10 rounded-2xl border border-zinc-700/50 shadow-2xl pointer-events-auto"
+      className="flex flex-col gap-6 sm:gap-7 w-full max-w-sm mx-auto px-4 sm:px-4 bg-zinc-950/60 backdrop-blur-xl p-6 sm:p-10 rounded-xl sm:rounded-2xl border border-zinc-700/50 shadow-2xl pointer-events-auto"
     >
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">
+      <div className="text-center space-y-1.5 sm:space-y-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
           Crie sua conta
         </h1>
-        <p className="text-sm text-zinc-400">Preencha os campos para começar</p>
+        <p className="text-xs sm:text-sm text-zinc-400">
+          Preencha os campos para começar
+        </p>
         {serverError && (
           <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 mt-1">
             {serverError}

@@ -1,8 +1,8 @@
 import { Header } from "@/components/Header";
-import { TextType } from "@/components/TextType";
+import { TextType } from "@/components/ui/TextType";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LiquidEther } from "@/components/LiquidEther";
+import { LiquidEther } from "@/components/ui/LiquidEther";
 
 export default function Home() {
   return (

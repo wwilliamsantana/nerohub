@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { LiquidEther } from "@/components/LiquidEther";
+import { LiquidEther } from "@/components/ui/LiquidEther";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { FormEvent, useState, useEffect } from "react";

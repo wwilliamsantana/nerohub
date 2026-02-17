@@ -139,7 +139,6 @@ export function LiquidEther({
           antialias: true,
           alpha: true,
         });
-        // Always transparent
         this.renderer.autoClear = false;
         this.renderer.setClearColor(new THREE.Color(0x000000), 0);
         this.renderer.setPixelRatio(this.pixelRatio);

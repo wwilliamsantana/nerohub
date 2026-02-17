@@ -1,4 +1,4 @@
-import { LiquidEther } from "@/components/LiquidEther";
+import { LiquidEther } from "@/components/ui/LiquidEther";
 import { RegisterForm } from "@/components/RegisterForm";
 import Link from "next/link";
 

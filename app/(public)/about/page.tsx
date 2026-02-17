@@ -1,6 +1,6 @@
-import ScrollReveal from "@/components/ScrollReveal";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
-import { LiquidEther } from "@/components/LiquidEther";
+import { LiquidEther } from "@/components/ui/LiquidEther";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

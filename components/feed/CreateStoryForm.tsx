@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   ArrowLeft,
   Send,
@@ -15,72 +18,93 @@ import { ALL_TAGS } from "@/lib/stories";
 
 const AVAILABLE_TAGS = ALL_TAGS.filter((tag) => tag !== "Todos");
 
+const createStorySchema = z.object({
+  title: z
+    .string()
+    .min(3, "O título deve ter no mínimo 3 caracteres")
+    .max(120, "O título não pode ultrapassar 120 caracteres"),
+  content: z
+    .string()
+    .min(50, "A história deve ter no mínimo 50 caracteres")
+    .max(50000, "A história não pode ultrapassar 50.000 caracteres"),
+  tags: z
+    .array(z.string())
+    .min(1, "Selecione ao menos 1 tag")
+    .max(5, "Selecione no máximo 5 tags"),
+});
+
+type CreateStoryFormData = z.infer<typeof createStorySchema>;
+
 export function CreateStoryForm({ authorName }: { authorName: string }) {
   const router = useRouter();
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [customTag, setCustomTag] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTagInput, setShowTagInput] = useState(false);
+  const [serverError, setServerError] = useState("");
 
-  const isValid =
-    title.trim().length > 0 &&
-    content.trim().length > 0 &&
-    selectedTags.length > 0;
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<CreateStoryFormData>({
+    resolver: zodResolver(createStorySchema),
+    defaultValues: {
+      tags: [],
+    },
+  });
+
+  const selectedTags = watch("tags");
+  const title = watch("title");
+  const content = watch("content");
 
   // Gera o resumo automaticamente dos primeiros 300 caracteres do conteúdo
   const excerpt = content.slice(0, 300) + (content.length > 300 ? "..." : "");
 
   function toggleTag(tag: string) {
-    setSelectedTags((prev) =>
-      prev.includes(tag)
-        ? prev.filter((t) => t !== tag)
-        : prev.length < 5
-          ? [...prev, tag]
-          : prev,
+    setValue(
+      "tags",
+      selectedTags.includes(tag)
+        ? selectedTags.filter((t) => t !== tag)
+        : selectedTags.length < 5
+          ? [...selectedTags, tag]
+          : selectedTags,
     );
   }
 
   function addCustomTag() {
     const tag = customTag.trim();
     if (tag && !selectedTags.includes(tag) && selectedTags.length < 5) {
-      setSelectedTags((prev) => [...prev, tag]);
+      setValue("tags", [...selectedTags, tag]);
       setCustomTag("");
       setShowTagInput(false);
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!isValid) return;
-
-    setIsSubmitting(true);
+  async function onSubmit(data: CreateStoryFormData) {
+    setServerError("");
 
     try {
       const res = await fetch("/api/stories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: title.trim(),
-          content: content.trim(),
-          tags: selectedTags,
+          title: data.title.trim(),
+          content: data.content.trim(),
+          tags: data.tags,
         }),
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        alert(data.error || "Erro ao publicar história");
-        setIsSubmitting(false);
+        const responseData = await res.json();
+        setServerError(responseData.error || "Erro ao publicar história");
         return;
       }
 
       router.push("/dashboard");
       router.refresh();
     } catch {
-      alert("Erro ao publicar história");
-      setIsSubmitting(false);
+      setServerError("Ocorreu um erro. Tente novamente.");
     }
   }
 
@@ -115,7 +139,14 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Erro do servidor */}
+          {serverError && (
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              {serverError}
+            </div>
+          )}
+
           {/* Autor (read-only) */}
           <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-indigo-600 text-sm font-bold text-white uppercase shrink-0">
@@ -137,15 +168,23 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
             </label>
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
               placeholder="Dê um título cativante à sua história..."
               maxLength={120}
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-all"
+              {...register("title")}
+              className={`w-full rounded-xl border bg-zinc-900/60 px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-1 transition-all ${
+                errors.title
+                  ? "border-red-500/60 focus:ring-red-500/30 focus:border-red-500/50"
+                  : "border-zinc-800 focus:ring-violet-500/30 focus:border-violet-500/50"
+              }`}
             />
-            <p className="text-xs text-zinc-600 text-right">
-              {title.length}/120
-            </p>
+            <div className="flex justify-between">
+              <span className="text-xs text-red-400">
+                {errors.title?.message}
+              </span>
+              <span className="text-xs text-zinc-600">
+                {title?.length || 0}/120
+              </span>
+            </div>
           </div>
 
           {/* Conteúdo */}
@@ -155,17 +194,25 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
               Conteúdo
             </label>
             <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
               placeholder="Escreva sua história aqui... Use parágrafos para organizar o texto."
               rows={14}
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-all resize-none leading-relaxed"
+              {...register("content")}
+              className={`w-full rounded-xl border bg-zinc-900/60 px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-1 transition-all resize-none leading-relaxed ${
+                errors.content
+                  ? "border-red-500/60 focus:ring-red-500/30 focus:border-red-500/50"
+                  : "border-zinc-800 focus:ring-violet-500/30 focus:border-violet-500/50"
+              }`}
             />
-            <div className="flex justify-between text-xs text-zinc-600">
-              <span>
-                {content.split(/\s+/).filter(Boolean).length} palavras
+            <div className="flex justify-between">
+              <span className="text-xs text-red-400">
+                {errors.content?.message}
               </span>
-              <span>{content.length} caracteres</span>
+              <div className="flex gap-4 text-xs text-zinc-600">
+                <span>
+                  {content?.split(/\s+/).filter(Boolean).length || 0} palavras
+                </span>
+                <span>{content?.length || 0} caracteres</span>
+              </div>
             </div>
           </div>
 
@@ -178,6 +225,11 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
                 ({selectedTags.length}/5 selecionadas)
               </span>
             </label>
+
+            {/* Mensagem de erro das tags */}
+            {errors.tags && (
+              <p className="text-xs text-red-400">{errors.tags.message}</p>
+            )}
 
             {/* Tags selecionadas */}
             {selectedTags.length > 0 && (
@@ -259,6 +311,17 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
                 </button>
               </div>
             )}
+
+            {/* Botão para adicionar tag personalizada */}
+            {!showTagInput && selectedTags.length < 5 && (
+              <button
+                type="button"
+                onClick={() => setShowTagInput(true)}
+                className="text-xs text-zinc-400 hover:text-zinc-300 underline underline-offset-2 transition-colors"
+              >
+                + Tag personalizada
+              </button>
+            )}
           </div>
 
           {/* Divisor */}
@@ -295,7 +358,7 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              disabled={!isValid || isSubmitting}
+              disabled={isSubmitting}
               className="flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 text-sm font-semibold text-white hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (

@@ -11,9 +11,15 @@ import { z } from "zod";
 
 const registerSchema = z
   .object({
-    name: z.string().min(2, "O nome deve ter no mínimo 2 caracteres"),
-    email: z.string().email("E-mail inválido"),
-    password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
+    name: z
+      .string()
+      .min(2, "O nome deve ter no mínimo 2 caracteres")
+      .max(50, "O nome não pode ultrapassar 50 caracteres"),
+    email: z.string().email("E-mail inválido").toLowerCase(),
+    password: z
+      .string()
+      .min(6, "A senha deve ter no mínimo 6 caracteres")
+      .max(100, "A senha não pode ultrapassar 100 caracteres"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

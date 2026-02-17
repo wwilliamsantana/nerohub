@@ -77,12 +77,12 @@ export function StoryView({
             ))}
           </div>
 
-          {/* Title */}
+          {/* Título */}
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6 leading-tight">
             {story.title}
           </h1>
 
-          {/* Author info */}
+          {/* Informações do autor */}
           <div className="flex items-center gap-4 pb-8 border-b border-zinc-800">
             <Link
               href={`/author/${encodeURIComponent(story.authorName)}`}
@@ -106,7 +106,7 @@ export function StoryView({
           </div>
         </header>
 
-        {/* Content */}
+        {/* Conteúdo */}
         <article className="space-y-5">
           {paragraphs.map((paragraph, index) => (
             <p
@@ -118,7 +118,7 @@ export function StoryView({
           ))}
         </article>
 
-        {/* Rating section */}
+        {/* Seção de Avaliação */}
         {!isOwnStory && currentUserId && (
           <div className="mt-12 pt-8 border-t border-zinc-800">
             <InteractiveRating
@@ -128,7 +128,7 @@ export function StoryView({
           </div>
         )}
 
-        {/* Bottom back button */}
+        {/* Botão de Voltar */}
         <div className="mt-16 pt-8 border-t border-zinc-800 flex justify-center">
           <button
             type="button"

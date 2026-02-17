@@ -118,12 +118,12 @@ export function StoryCard({ story, isOwn = false, onDelete }: StoryCardProps) {
           </div>
         </div>
 
-        {/* Title */}
+        {/* Título */}
         <h3 className="text-sm sm:text-base font-bold text-zinc-100 mb-2 line-clamp-2 sm:line-clamp-1 group-hover:text-white transition-colors">
           {story.title}
         </h3>
 
-        {/* Excerpt */}
+        {/* Trecho */}
         <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3 sm:mb-4">
           {story.content.slice(0, 300) +
             (story.content.length > 300 ? "..." : "")}
@@ -141,7 +141,7 @@ export function StoryCard({ story, isOwn = false, onDelete }: StoryCardProps) {
           )}
         </div>
 
-        {/* Date + Read indicator */}
+        {/* Data + Indicador de Leitura */}
         <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-zinc-800/50 text-xs text-zinc-500">
           <div className="flex items-center gap-1">
             <Clock size={12} />

@@ -24,7 +24,7 @@ export function AuthorProfileView({
   return (
     <div className="min-h-screen bg-black text-zinc-100">
       <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Top bar */}
+        {/* Top */}
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
@@ -37,7 +37,7 @@ export function AuthorProfileView({
           <span>Voltar ao Feed</span>
         </button>
 
-        {/* Author header */}
+        {/* Header Autor*/}
         <div className="flex flex-col items-center text-center mb-12">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-indigo-600 text-3xl font-bold text-white uppercase mb-4 shadow-[0_0_32px_rgba(139,92,246,0.25)]">
             {authorName.charAt(0)}
@@ -47,7 +47,7 @@ export function AuthorProfileView({
           </h1>
           <p className="text-sm text-zinc-500 mb-6">Autor no NeroHub</p>
 
-          {/* Stats */}
+          {/* Status */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/80 border border-zinc-800">
               <BookOpen size={16} className="text-violet-400" />
@@ -87,7 +87,7 @@ export function AuthorProfileView({
           </div>
         </div>
 
-        {/* Stories section */}
+        {/* Seção de Histórias */}
         <div className="space-y-4">
           <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
             <BookOpen size={18} className="text-violet-400" />
@@ -101,7 +101,7 @@ export function AuthorProfileView({
           </div>
         </div>
 
-        {/* Bottom back button */}
+        {/* Botão de Voltar */}
         <div className="mt-16 pt-8 border-t border-zinc-800 flex justify-center">
           <button
             type="button"

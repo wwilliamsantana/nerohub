@@ -113,7 +113,7 @@ export function CreateStoryForm({ authorName }: { authorName: string }) {
   return (
     <div className="min-h-screen bg-black text-zinc-100">
       <div className="max-w-3xl mx-auto px-6 py-12">
-        {/* Top bar */}
+        {/* Top */}
         <div className="flex items-center justify-between mb-10">
           <button
             type="button"

@@ -64,14 +64,14 @@ export function StoryFeed({ stories: allStories }: StoryFeedProps) {
         ))}
       </div>
 
-      {/* Stories grid */}
+      {/* Grid de histórias */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {paginatedStories.map((story) => (
           <StoryCard key={story.id} story={story} />
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* Paginação */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 pt-4">
           <button
@@ -114,7 +114,7 @@ export function StoryFeed({ stories: allStories }: StoryFeedProps) {
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Estado vazio */}
       {filteredStories.length === 0 && (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <BookOpen size={40} className="text-zinc-700 mb-3" />

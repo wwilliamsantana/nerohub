@@ -48,7 +48,7 @@ export function MyProfileView({
           <span>Voltar ao Feed</span>
         </button>
 
-        {/* Profile header */}
+        {/* Header do perfil */}
         <div className="flex flex-col items-center text-center mb-12">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-indigo-600 text-3xl font-bold text-white uppercase mb-4 shadow-[0_0_32px_rgba(139,92,246,0.25)]">
             {userName.charAt(0)}
@@ -58,7 +58,7 @@ export function MyProfileView({
           </h1>
           <p className="text-sm text-zinc-500 mb-6">Meu perfil no NeroHub</p>
 
-          {/* Stats */}
+          {/* Status */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/80 border border-zinc-800">
               <BookOpen size={16} className="text-violet-400" />
@@ -81,7 +81,7 @@ export function MyProfileView({
           </div>
         </div>
 
-        {/* My stories section */}
+        {/* Seção de Minhas Histórias */}
         {stories.length > 0 && (
           <div className="space-y-4 mb-12">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
@@ -101,7 +101,7 @@ export function MyProfileView({
           </div>
         )}
 
-        {/* Saved stories section */}
+        {/* Seção de Histórias Salvas */}
         <div className="space-y-4">
           <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
             <Heart size={18} className="text-rose-400" />
@@ -129,7 +129,7 @@ export function MyProfileView({
           )}
         </div>
 
-        {/* Bottom back button */}
+        {/* Botão de Voltar */}
         <div className="mt-16 pt-8 border-t border-zinc-800 flex justify-center">
           <button
             type="button"

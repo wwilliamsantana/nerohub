@@ -1,6 +1,8 @@
 "use client";
 
-import { Bookmark, Eye, Clock } from "lucide-react";
+import { useState } from "react";
+import { Bookmark, Eye, Clock, Trash2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { StarRating } from "./StarRating";
 import { TagBadge } from "./TagBadge";
 import { useSavedStories } from "@/components/provider/SavedStoriesProvider";
@@ -10,11 +12,42 @@ import Link from "next/link";
 
 interface StoryCardProps {
   story: StoryWithDetails;
+  isOwn?: boolean;
+  onDelete?: (storyId: string) => void;
 }
 
-export function StoryCard({ story }: StoryCardProps) {
+export function StoryCard({ story, isOwn = false, onDelete }: StoryCardProps) {
+  const { data: session } = useSession();
   const { isSaved, toggleSave } = useSavedStories();
   const saved = isSaved(story.id);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const isAuthor = session?.user?.id === story.authorId;
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!confirm("Tem certeza que deseja deletar esta história?")) return;
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/stories/${story.id}/delete`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao deletar história");
+      }
+
+      onDelete?.(story.id);
+    } catch (error) {
+      console.error("Erro ao deletar:", error);
+      alert("Erro ao deletar a história. Tente novamente.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <Link href={`/story/${story.id}`} className="block">
@@ -37,28 +70,52 @@ export function StoryCard({ story }: StoryCardProps) {
             </div>
           </Link>
 
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleSave(story.id);
-            }}
-            className={`flex items-center gap-1 transition-colors cursor-pointer shrink-0 ${
-              saved ? "text-amber-400" : "text-zinc-500 hover:text-amber-400"
-            }`}
-            title={saved ? "Remover dos salvos" : "Salvar história"}
-          >
-            <Bookmark
-              size={14}
-              className={`transition-transform group-hover:scale-110 sm:w-4 sm:h-4 ${
-                saved ? "fill-amber-400" : ""
+          <div className="flex items-center gap-2 shrink-0">
+            {isOwn && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="flex items-center justify-center p-1 text-zinc-500 hover:text-red-400 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Deletar história"
+              >
+                <Trash2
+                  size={14}
+                  className="transition-transform hover:scale-110 sm:w-4 sm:h-4"
+                />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleSave(story.id);
+              }}
+              disabled={isAuthor}
+              className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                isAuthor
+                  ? "text-zinc-600 cursor-not-allowed"
+                  : saved
+                    ? "text-amber-400"
+                    : "text-zinc-500 hover:text-amber-400"
               }`}
-            />
-            <span className="text-[10px] sm:text-xs font-medium">
-              {story.saves}
-            </span>
-          </button>
+              title={
+                isAuthor
+                  ? "Você não pode salvar suas próprias histórias"
+                  : saved
+                    ? "Remover dos salvos"
+                    : "Salvar história"
+              }
+            >
+              <Bookmark
+                size={14}
+                className={`transition-transform group-hover:scale-110 sm:w-4 sm:h-4 ${
+                  saved ? "fill-amber-400" : ""
+                }`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Title */}

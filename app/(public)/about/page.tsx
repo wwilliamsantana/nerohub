@@ -45,8 +45,8 @@ export default function About() {
           <ScrollReveal
             baseOpacity={0.05}
             enableBlur
-            baseRotation={8}
-            blurStrength={20}
+            baseRotation={20}
+            blurStrength={50}
           >
             O NeroHub nasceu da vontade de dar voz a quem tem histórias para
             contar. Acreditamos que toda jornada merece ser escrita,
@@ -61,8 +61,8 @@ export default function About() {
           <ScrollReveal
             baseOpacity={0.05}
             enableBlur
-            baseRotation={8}
-            blurStrength={20}
+            baseRotation={20}
+            blurStrength={50}
           >
             Queremos construir um espaço onde escritores independentes possam
             criar universos, desenvolver personagens e encontrar leitores que se
@@ -77,8 +77,8 @@ export default function About() {
           <ScrollReveal
             baseOpacity={0.05}
             enableBlur
-            baseRotation={8}
-            blurStrength={20}
+            baseRotation={20}
+            blurStrength={50}
           >
             Criatividade sem limites. Comunidade acolhedora. Histórias que
             inspiram. Esses são os pilares que guiam cada decisão no NeroHub.
@@ -92,7 +92,7 @@ export default function About() {
           <ScrollReveal
             baseOpacity={0}
             enableBlur
-            baseRotation={8}
+            baseRotation={5}
             blurStrength={20}
             containerClassName="text-center"
             textClassName="text-zinc-400"

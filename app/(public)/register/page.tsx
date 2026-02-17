@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Register() {
   return (
-    <div className="w-full min-h-screen relative bg-black overflow-hidden">
+    <div className="w-full h-screen relative bg-black overflow-hidden">
       <Link
         href="/"
         className="fixed top-4 sm:top-6 right-4 sm:right-6 z-50 text-xs sm:text-sm text-zinc-400 hover:text-zinc-100 underline underline-offset-4 transition-colors"

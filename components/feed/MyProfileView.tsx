@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   ArrowLeft,
   BookOpen,
@@ -23,6 +24,13 @@ export function MyProfileView({
   myStories,
 }: MyProfileViewProps) {
   const router = useRouter();
+  const [stories, setStories] = useState(myStories);
+
+  const handleDeleteStory = (storyId: string) => {
+    setStories((prevStories) =>
+      prevStories.filter((story) => story.id !== storyId),
+    );
+  };
 
   return (
     <div className="min-h-screen bg-black text-zinc-100">
@@ -55,10 +63,10 @@ export function MyProfileView({
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/80 border border-zinc-800">
               <BookOpen size={16} className="text-violet-400" />
               <span className="text-sm font-semibold text-zinc-200">
-                {myStories.length}
+                {stories.length}
               </span>
               <span className="text-xs text-zinc-500">
-                {myStories.length === 1 ? "história" : "histórias"}
+                {stories.length === 1 ? "história" : "histórias"}
               </span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/80 border border-zinc-800">
@@ -74,15 +82,20 @@ export function MyProfileView({
         </div>
 
         {/* My stories section */}
-        {myStories.length > 0 && (
+        {stories.length > 0 && (
           <div className="space-y-4 mb-12">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
               <BookOpen size={18} className="text-violet-400" />
               Minhas Histórias
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {myStories.map((story) => (
-                <StoryCard key={story.id} story={story} />
+              {stories.map((story) => (
+                <StoryCard
+                  key={story.id}
+                  story={story}
+                  isOwn={true}
+                  onDelete={handleDeleteStory}
+                />
               ))}
             </div>
           </div>

@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { SignOutButton } from "@/components/SignOutButton";
+import { StoryFeed } from "@/components/feed/StoryFeed";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -20,8 +22,18 @@ export default async function DashboardPage() {
             </h1>
             <p className="text-zinc-400">Bem-vindo ao seu painel no NeroHub.</p>
           </div>
-          <SignOutButton />
+          <div className="flex items-center gap-3">
+            <Link
+              href="/profile"
+              className="px-4 py-2 rounded-lg bg-violet-600/20 border border-violet-500/30 text-sm text-violet-300 hover:bg-violet-600/30 hover:text-violet-200 transition-all"
+            >
+              Meu Perfil
+            </Link>
+            <SignOutButton />
+          </div>
         </div>
+
+        <StoryFeed />
       </div>
     </div>
   );

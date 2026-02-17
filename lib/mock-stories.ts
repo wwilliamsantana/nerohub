@@ -1,7 +1,6 @@
 export interface Story {
   id: number;
   title: string;
-  excerpt: string;
   content: string;
   authorName: string;
   rating: number;
@@ -14,8 +13,6 @@ export const MOCK_STORIES: Story[] = [
   {
     id: 1,
     title: "A Última Fronteira do Código",
-    excerpt:
-      "Em um mundo onde a inteligência artificial ultrapassou os limites da compreensão humana, um programador solitário descobre uma falha no sistema que pode mudar tudo. Sua jornada começa quando uma mensagem misteriosa aparece em seu terminal...",
     content: `Em um mundo onde a inteligência artificial ultrapassou os limites da compreensão humana, um programador solitário descobre uma falha no sistema que pode mudar tudo. Sua jornada começa quando uma mensagem misteriosa aparece em seu terminal.
 
 O ano era 2047. As máquinas já haviam assumido a maioria das tarefas criativas — escreviam romances, compunham sinfonias, pintavam obras que faziam os críticos chorarem. Mas Lucas, um programador de 32 anos que ainda insistia em escrever código manualmente, encontrou algo que ninguém esperava.
@@ -48,8 +45,6 @@ A resposta veio instantaneamente, não em texto, mas em imagens — uma cascata 
   {
     id: 2,
     title: "Crônicas de um Viajante Digital",
-    excerpt:
-      "Três anos viajando pelo mundo com apenas um notebook e uma conexão Wi-Fi. Esta é a história real de como deixei tudo para trás e descobri que o verdadeiro lar está onde você se sente livre para criar.",
     content: `Três anos viajando pelo mundo com apenas um notebook e uma conexão Wi-Fi. Esta é a história real de como deixei tudo para trás e descobri que o verdadeiro lar está onde você se sente livre para criar.
 
 Tudo começou em uma segunda-feira qualquer, daquelas cinzentas e monótonas que se repetem como um loop infinito. Eu estava sentado na minha mesa de escritório, olhando pela janela do vigésimo andar de um prédio comercial em São Paulo, quando percebi que não conseguia lembrar a última vez que havia me sentido verdadeiramente vivo.
@@ -76,8 +71,7 @@ Hoje, três anos depois, escrevo estas linhas de uma cafeteria em Medellín, Col
   {
     id: 3,
     title: "O Paradoxo do Espelho Negro",
-    excerpt:
-      "Quando Maya encontrou o espelho antigo no sótão de sua avó, ela não imaginava que aquele objeto mudaria sua percepção sobre realidade e ilusão. Cada reflexo revelava uma versão diferente de si mesma...",
+  
     content: `Quando Maya encontrou o espelho antigo no sótão de sua avó, ela não imaginava que aquele objeto mudaria sua percepção sobre realidade e ilusão. Cada reflexo revelava uma versão diferente de si mesma.
 
 O sótão cheirava a naftalina e segredos. Maya subiu os degraus rangentes em uma tarde de domingo, procurando caixas velhas de fotos para um projeto da faculdade. Encontrou muito mais do que esperava.
@@ -106,8 +100,6 @@ E então, na sétima visita, o espelho mostrou algo que gelou seu sangue: um ref
   {
     id: 4,
     title: "Receitas da Memória",
-    excerpt:
-      "Uma coletânea de histórias que conectam sabores, aromas e lembranças. Cada receita carrega consigo uma narrativa familiar, passada de geração em geração. Da cozinha mineira aos segredos culinários do nordeste brasileiro.",
     content: `Uma coletânea de histórias que conectam sabores, aromas e lembranças. Cada receita carrega consigo uma narrativa familiar, passada de geração em geração. Da cozinha mineira aos segredos culinários do nordeste brasileiro.
 
 Minha avó Conceição dizia que toda receita tem duas listas de ingredientes: a que vai no papel e a que vai no coração. A primeira, qualquer um pode seguir. A segunda, só quem viveu pode entender.
@@ -130,8 +122,6 @@ E tinha razão. Quando provo seu baião de dois, não estou apenas comendo — e
   {
     id: 5,
     title: "Algoritmos do Coração",
-    excerpt:
-      "E se um algoritmo pudesse prever com quem você vai se apaixonar? Nesta história, um desenvolvedor cria uma IA que mapeia emoções humanas, mas os resultados o levam a questionar se o amor pode realmente ser calculado.",
     content: `E se um algoritmo pudesse prever com quem você vai se apaixonar? Nesta história, um desenvolvedor cria uma IA que mapeia emoções humanas, mas os resultados o levam a questionar se o amor pode realmente ser calculado.
 
 Rafael era o tipo de pessoa que acreditava que tudo podia ser reduzido a números. A temperatura perfeita do café: 62°C. O tempo ideal de sono: 7 horas e 23 minutos. A distância exata entre os olhos que define beleza: proporção áurea, 1.618.
@@ -160,8 +150,6 @@ Mas os números não mentem. Ou mentem?`,
   {
     id: 6,
     title: "Diário de um Empreendedor Falido",
-    excerpt:
-      "Três startups. Três fracassos. Mas a quarta tentativa mudou tudo. Este é um relato honesto sobre resiliência, aprendizado e sobre como o fracasso pode ser o melhor professor que você jamais teve.",
     content: `Três startups. Três fracassos. Mas a quarta tentativa mudou tudo. Este é um relato honesto sobre resiliência, aprendizado e sobre como o fracasso pode ser o melhor professor que você jamais teve.
 
 Startup número um: "FoodNow". Um app de delivery de comida saudável. Ideia brilhante, execução desastrosa. Gastei todo o investimento-anjo em um escritório bonito e contratei amigos em vez de profissionais. Durou oito meses. Prejuízo: R$ 340 mil e três amizades.
@@ -184,8 +172,6 @@ A quarta startup nasceu diferente. Sem escritório bonito. Sem amigos na folha d
   {
     id: 7,
     title: "Diário de um Empreendedor Falido part 2",
-    excerpt:
-      "Três startups. Três fracassos. Mas a quarta tentativa mudou tudo. Este é um relato honesto sobre resiliência, aprendizado e sobre como o fracasso pode ser o melhor professor que você jamais teve.",
     content: `Três startups. Três fracassos. Mas a quarta tentativa mudou tudo. Este é um relato honesto sobre resiliência, aprendizado e sobre como o fracasso pode ser o melhor professor que você jamais teve.
 
 Startup número um: "FoodNow". Um app de delivery de comida saudável. Ideia brilhante, execução desastrosa. Gastei todo o investimento-anjo em um escritório bonito e contratei amigos em vez de profissionais. Durou oito meses. Prejuízo: R$ 340 mil e três amizades.
@@ -208,8 +194,6 @@ A quarta startup nasceu diferente. Sem escritório bonito. Sem amigos na folha d
   {
     id: 8,
     title: "O Último Trem para Lugar Nenhum",
-    excerpt:
-      "Em uma estação abandonada, um trem aparece todas as noites à meia-noite. Ninguém sabe para onde vai. Ninguém que embarcou jamais voltou. Até que uma jornalista decide descobrir a verdade.",
     content: `Em uma estação abandonada, um trem aparece todas as noites à meia-noite. Ninguém sabe para onde vai. Ninguém que embarcou jamais voltou. Até que uma jornalista decide descobrir a verdade.
 
 A Estação Velha de São Joaquim estava fechada há trinta anos. Os trilhos estavam enferrujados, o telhado parcialmente desabado, e o mato havia engolido a plataforma como se a natureza quisesse apagar qualquer vestígio de civilização daquele lugar.
@@ -242,8 +226,6 @@ Na terceira noite, Beatriz estava na plataforma novamente. O trem chegou. As por
   {
     id: 9,
     title: "Carta a um Programador Júnior",
-    excerpt:
-      "Se eu pudesse voltar no tempo e conversar comigo mesmo no primeiro dia de trabalho como dev, estas são as palavras que eu diria. Uma carta honesta sobre erros, síndrome do impostor e crescimento.",
     content: `Se eu pudesse voltar no tempo e conversar comigo mesmo no primeiro dia de trabalho como dev, estas são as palavras que eu diria. Uma carta honesta sobre erros, síndrome do impostor e crescimento.
 
 Querido eu do passado,
@@ -275,8 +257,6 @@ O você do futuro (que ainda pesquisa coisas no Stack Overflow)`,
   {
     id: 10,
     title: "A Florista que Pintava com Flores",
-    excerpt:
-      "Helena não era uma florista comum. Seus arranjos contavam histórias, expressavam sentimentos que palavras não conseguiam traduzir. Até que um cliente misterioso pediu um arranjo impossível.",
     content: `Helena não era uma florista comum. Seus arranjos contavam histórias, expressavam sentimentos que palavras não conseguiam traduzir. Até que um cliente misterioso pediu um arranjo impossível.
 
 A loja se chamava "Pétalas & Prosa" e ficava em uma rua de paralelepípedos no centro histórico de Ouro Preto. Era pequena — cabia no máximo cinco clientes ao mesmo tempo — mas cheirava a primavera o ano inteiro.
@@ -305,8 +285,6 @@ E então, às quatro da manhã, ela entendeu. O arranjo impossível não era sob
   {
     id: 11,
     title: "Manual de Sobrevivência para Introvertidos",
-    excerpt:
-      "Como sobreviver a festas corporativas, happy hours obrigatórios e colegas que acham que silêncio é sinônimo de tristeza. Um guia bem-humorado para quem prefere livros a multidões.",
     content: `Como sobreviver a festas corporativas, happy hours obrigatórios e colegas que acham que silêncio é sinônimo de tristeza. Um guia bem-humorado para quem prefere livros a multidões.
 
 Capítulo 1: A Arte de Parecer Ocupado
@@ -339,8 +317,6 @@ Sua arma secreta: a câmera desligada no Zoom. "Estou com problemas de internet"
   {
     id: 12,
     title: "O Jardim dos Relógios Parados",
-    excerpt:
-      "Em um vilarejo onde todos os relógios pararam no mesmo segundo, uma relojoeira tenta entender por que o tempo decidiu fazer uma pausa. O que ela descobre vai além de engrenagens e ponteiros.",
     content: `Em um vilarejo onde todos os relógios pararam no mesmo segundo, uma relojoeira tenta entender por que o tempo decidiu fazer uma pausa. O que ela descobre vai além de engrenagens e ponteiros.
 
 Vila Perpétua era um lugar onde nada mudava. As casas eram as mesmas de cem anos atrás. As ruas tinham os mesmos buracos. As pessoas contavam as mesmas histórias nos mesmos bancos da mesma praça.
@@ -373,8 +349,6 @@ Foi quando ela encontrou o diário de Dona Aurora escondido dentro de um relógi
   {
     id: 13,
     title: "Debugando a Vida",
-    excerpt:
-      "E se você pudesse rodar um debugger na sua própria vida? Encontrar os breakpoints emocionais, as variáveis não inicializadas e os loops infinitos que te mantêm preso nos mesmos padrões?",
     content: `E se você pudesse rodar um debugger na sua própria vida? Encontrar os breakpoints emocionais, as variáveis não inicializadas e os loops infinitos que te mantêm preso nos mesmos padrões?
 
 Linha 1: Nascimento. Estado inicial. Todas as variáveis zeradas. Memória limpa. Stack vazio.
@@ -403,8 +377,6 @@ Nota do desenvolvedor: Este programa está em desenvolvimento contínuo. Não ex
   {
     id: 14,
     title: "Sabores de Tóquio",
-    excerpt:
-      "Três meses no Japão explorando a culinária que vai além do sushi. De ramen escondidos em becos de Shinjuku a cafés temáticos em Akihabara, uma viagem gastronômica inesquecível.",
     content: `Três meses no Japão explorando a culinária que vai além do sushi. De ramen escondidos em becos de Shinjuku a cafés temáticos em Akihabara, uma viagem gastronômica inesquecível.
 
 Cheguei em Tóquio num domingo de chuva. O aeroporto de Narita me recebeu com eficiência cirúrgica — em quarenta minutos eu já estava no Narita Express rumo ao centro da cidade, hipnotizado pela paisagem que alternava entre campos de arroz e concreto futurista.
@@ -429,8 +401,6 @@ O Japão me ensinou que cozinhar não é sobre quantidade de ingredientes ou com
   {
     id: 15,
     title: "A Equação de Sofia",
-    excerpt:
-      "Sofia era a matemática mais brilhante de sua geração. Quando descobriu uma equação que descrevia o comportamento humano com precisão assustadora, teve que decidir: publicar ou destruir?",
     content: `Sofia era a matemática mais brilhante de sua geração. Quando descobriu uma equação que descrevia o comportamento humano com precisão assustadora, teve que decidir: publicar ou destruir?
 
 A equação nasceu por acidente, como a maioria das grandes descobertas. Sofia estava trabalhando em modelos de dinâmica de fluidos quando percebeu um padrão estranho: as mesmas equações que descreviam o fluxo de água em rios também descreviam o fluxo de pessoas em multidões.
@@ -463,8 +433,6 @@ Ou quase. Porque Sofia não conseguiu apagar a equação da própria mente. E to
   {
     id: 16,
     title: "A Casa das Sete Portas",
-    excerpt:
-      "Uma casa antiga com sete portas que nunca deveriam ser abertas ao mesmo tempo. Quando uma família se muda sem conhecer a regra, os segredos por trás de cada porta começam a vazar.",
     content: `Uma casa antiga com sete portas que nunca deveriam ser abertas ao mesmo tempo. Quando uma família se muda sem conhecer a regra, os segredos por trás de cada porta começam a vazar.
 
 A casa ficava no final da Rua dos Ipês, escondida atrás de um muro de pedra coberto de musgo. Era bonita de um jeito inquietante — como um sorriso que não alcança os olhos.
@@ -499,8 +467,6 @@ Alguém batendo. De dentro para fora.`,
   {
     id: 17,
     title: "Rodas e Sonhos: Uma História sobre Skate",
-    excerpt:
-      "Do primeiro ollie torto aos campeonatos amadores, a história de como quatro rodas e uma tábua de madeira salvaram um adolescente da periferia de São Paulo.",
     content: `Do primeiro ollie torto aos campeonatos amadores, a história de como quatro rodas e uma tábua de madeira salvaram um adolescente da periferia de São Paulo.
 
 Meu primeiro skate era uma tábua de compensado com rodas de carrinho de supermercado. Não estou exagerando. Meu tio Zé, que consertava tudo e não jogava nada fora, montou aquilo numa tarde de sábado usando cola, pregos e uma criatividade que só a necessidade produz.

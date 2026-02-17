@@ -66,7 +66,7 @@ export function StoryCard({ story }: StoryCardProps) {
 
         {/* Excerpt */}
         <p className="text-sm text-zinc-400 leading-relaxed line-clamp-3 mb-4">
-          {story.excerpt}
+          {story.content.slice(0, 300) + (story.content.length > 300 ? "..." : "")}
         </p>
 
         {/* Tags */}

@@ -17,7 +17,7 @@ Construído com **Next.js 16**, **Prisma**, **NextAuth** e uma pitada de WebGL p
 | Ícones         | Lucide React                       |
 | Autenticação   | NextAuth.js v4 (Credentials + JWT) |
 | Banco de dados | SQLite via Prisma 6                |
-| Formulários    | React Hook Form + Zod              |
+| Formulários    | React Hook Form + Zod (validação)  |
 | Animações      | GSAP, Three.js, OGL (LiquidEther)  |
 | Lint           | ESLint (config Rocketseat)         |
 
@@ -25,13 +25,15 @@ Construído com **Next.js 16**, **Prisma**, **NextAuth** e uma pitada de WebGL p
 
 ## ✨ Funcionalidades
 
-- **Criar e publicar histórias** com título, conteúdo e até 5 tags (pré-definidas ou personalizadas)
-- **Feed paginado** com filtro por tags e ordenação por data
-- **Salvar histórias** de outros autores (toggle com atualização otimista)
-- **Avaliar histórias** com sistema de 1 a 5 estrelas (não é possível avaliar as próprias)
+- **Criar e publicar histórias** com validação (Zod): título 3-120 chars, conteúdo 50-50k chars, 1-5 tags
+- **Tags personalizadas** além das 16 pré-definidas
+- **Feed paginado** (14 histórias/página) com filtro por tags e ordenação por data
+- **Salvar histórias** de outros autores (toggle com atualização otimista via Context)
+- **Avaliar histórias** com sistema de 1 a 5 estrelas interativo (não é possível avaliar as próprias)
 - **Perfil pessoal** com suas histórias publicadas e as que você mais gostou
-- **Perfil de autor** para explorar as publicações de outros escritores
-- **Autenticação completa** com registro, login e proteção de rotas server-side
+- **Perfil de autor** público para explorar as publicações de outros escritores
+- **Autenticação completa** com validação React Hook Form + Zod em todos os forms
+- **Proteção de rotas** server-side com `getServerSession`
 - **Landing page imersiva** com efeito de digitação animada e background fluido interativo (WebGL)
 
 ---
@@ -108,23 +110,35 @@ O sistema usa **NextAuth.js v4** com estratégia **JWT** e **CredentialsProvider
 
 ### Registro
 
-1. Formulário validado com **React Hook Form + Zod** (nome, e-mail, senha, confirmação)
-2. `POST /api/register` → valida campos, verifica duplicata, faz hash com **bcrypt**, salva no banco
+1. Formulário com **React Hook Form + Zod** para validação robusta:
+   - Nome: 2-50 caracteres
+   - E-mail: formato válido, normalizado com `.toLowerCase()`
+   - Senha: 6-100 caracteres
+   - Confirmação de senha com verificação `refine()`
+   - Mensagens de erro em tempo real
+
+2. `POST /api/register` → valida schema, verifica duplicata, faz hash com **bcrypt** (12 rounds), salva no banco
 3. Login automático logo após o registro
 4. Redirecionamento para `/dashboard`
 
 ### Login
 
-1. `signIn("credentials")` do NextAuth
-2. Busca o usuário por e-mail e compara a senha com bcrypt
-3. Gera JWT com o `id` do usuário via callbacks
-4. Redirecionamento para `/dashboard`
+1. Formulário com **React Hook Form + Zod**:
+   - E-mail: validação de formato
+   - Senha: campo obrigatório
+   - Erros mostrados dinamicamente
+
+2. `signIn("credentials")` do NextAuth
+3. Busca o usuário por e-mail e compara a senha com bcrypt
+4. Gera JWT com o `id` do usuário via callbacks
+5. Redirecionamento para `/dashboard`
 
 ### Proteção de Rotas
 
 - **Rotas privadas** (`app/(private)/`) são protegidas via `getServerSession` no layout server-side — quem não está logado é redirecionado para `/login`
 - **Usuários logados** que acessam `/login` ou `/register` são automaticamente levados ao `/dashboard`
 - **Header** exibe o nome do usuário e o botão "Sair" quando há uma sessão ativa
+- **Loading state** na página de login durante verificação de sessão
 
 ---
 
@@ -196,14 +210,14 @@ model Rating {
 
 ## 📡 API Routes
 
-| Rota                      | Método | Descrição                                           |
-| ------------------------- | ------ | --------------------------------------------------- |
-| `/api/register`           | POST   | Cria uma nova conta de usuário                      |
-| `/api/auth/[...nextauth]` | \*     | Handlers do NextAuth (login, sessão, etc.)          |
-| `/api/stories`            | GET    | Lista todas as histórias com nota média e contagens |
-| `/api/stories`            | POST   | Cria uma nova história com tags                     |
-| `/api/stories/[id]/save`  | POST   | Salva ou remove uma história dos favoritos (toggle) |
-| `/api/stories/[id]/rate`  | POST   | Avalia uma história de 1 a 5 estrelas               |
+| Rota                      | Método | Descrição                                                     |
+| ------------------------- | ------ | ------------------------------------------------------------- |
+| `/api/register`           | POST   | Cria nova conta (validação server-side, hash bcrypt)          |
+| `/api/auth/[...nextauth]` | \*     | Handlers do NextAuth (login, sessão, callback, etc.)          |
+| `/api/stories`            | GET    | Lista todas as histórias com nota média e contagens de salvos |
+| `/api/stories`            | POST   | Cria história (requer autenticação, valida tags)              |
+| `/api/stories/[id]/save`  | POST   | Toggle de salvamento (atualização otimista)                   |
+| `/api/stories/[id]/rate`  | POST   | Avalia história (1-5 stars, impede auto-rating)               |
 
 ---
 
@@ -238,6 +252,45 @@ Acesse [http://localhost:3000](http://localhost:3000) e crie sua conta para come
 | `npm run build` | Gera o build de produção             |
 | `npm run start` | Inicia o servidor de produção        |
 | `npm run lint`  | Executa o ESLint                     |
+
+---
+
+## 🧪 Validação de Formulários
+
+Todos os formulários do projeto utilizam **React Hook Form** com **Zod** para validação robusta:
+
+### RegisterForm (Registro)
+
+```
+name: 2-50 caracteres
+email: formato válido, normalizado com .toLowerCase()
+password: 6-100 caracteres
+confirmPassword: deve coincidir com password
+```
+
+### Login
+
+```
+email: formato válido
+password: obrigatório
+```
+
+### CreateStoryForm (Criar História)
+
+```
+title: 3-120 caracteres
+content: 50-50.000 caracteres
+tags: array com 1-5 itens (strings)
+```
+
+**Benefícios da Implementação:**
+
+- ✅ Validação automática antes do submit
+- ✅ Mensagens de erro claras e localizadas (português)
+- ✅ Retroalimentação visual (borders vermelhas em erros)
+- ✅ Type-safe com `z.infer<typeof schema>`
+- ✅ Padrão consistente em todos os formulários
+- ✅ Erros de servidor tratados com `setError()`
 
 ---
 

@@ -72,18 +72,7 @@ prisma/
 
 **PostgreSQL** via **Prisma**, hospedado em **Supabase**.
 
-Modelos:
 
-- **User** — contas (com senha hash)
-- **Story** — histórias e seus metadados
-- **Tag** — categorias de histórias
-- **StoryTag** — relação many-to-many
-- **SavedStory** — histórias salvas por usuários
-- **Rating** — avaliações (1-5 estrelas)
-
-Todas as relações possuem `onDelete: Cascade`.
-
----
 
 ## 📡 API Routes
 
@@ -101,7 +90,7 @@ Todas as relações possuem `onDelete: Cascade`.
 
 ```bash
 # 1. Clonar e instalar
-git clone https://github.com/seu-usuario/nerohub.git
+git clone https://github.com/wwilliamsantana/nerohub.git
 cd nerohub
 npm install
 
@@ -119,21 +108,3 @@ npm run dev
 ```
 
 Abra [http://localhost:3000](http://localhost:3000)
-
----
-
-## Deploy
-
-- **Banco:** [Supabase](https://supabase.com) (PostgreSQL gerenciado)
-- **App:** [Vercel](https://vercel.com) — [nerohub.vercel.app](https://nerohub.vercel.app)
-
----
-
-## 📜 Scripts
-
-| Comando         | O que faz                   |
-| --------------- | --------------------------- |
-| `npm run dev`   | Servidor de desenvolvimento |
-| `npm run build` | Build de produção           |
-| `npm run start` | Rodar produção localmente   |
-| `npm run lint`  | ESLint                      |
